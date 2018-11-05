@@ -139,6 +139,14 @@ func (b *Batch) ReadOnceFrom(r io.Reader) (int, error) {
 	if n > 0 {
 		b.buf = b.buf[:len(b.buf)+n]
 	}
+	if len(b.buf) > 1 {
+		if b.buf[len(b.buf)-1] != byte(10) {
+			b.buf = b.buf[:len(b.buf)+1]
+			b.buf[len(b.buf)-1] = byte(10)
+			return n, err
+		}
+	}
+
 	return n, err
 }
 
